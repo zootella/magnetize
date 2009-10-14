@@ -1,3 +1,11 @@
+//
+// <p>
+//   Bookmark this link:
+//   <a href="javascript:(function()%20{var%20script%20=%20document.createElement(%22script%22);script.type%20=%20%22text/javascript%22;script.src%20=%20%22http://github.com/iamjwc/magnetize/raw/master/magnetize.js%22;document.getElementsByTagName(%22head%22)[0].appendChild(script);})();">magnetize</a>
+// </p>
+//
+
+
 if (!window.console) {
   console = {
     log : function(e) {}
@@ -88,8 +96,7 @@ function main() {
   });
   console.log(images);
   for (var i = 0; i < images.length; i++) {
-    download_all_link += "&xs." + i + non_page_links.length
-      + "=" + absoulutize(images[i].src);
+    download_all_link += "&xs." + (i + non_page_links.length) + "=" + absoulutize(images[i].src);
   }
   console.log(download_all_link);
   if (non_page_links.length > 0 || images.length > 0) {
