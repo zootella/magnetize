@@ -80,20 +80,19 @@ function createDownloadLinks(urls) {
 }
 
 function extension(url) {
-  return url.substr(url.lastIndexOf('.') + 1);
+  return url.toLowerCase().substr(url.lastIndexOf('.') + 1);
 }
 
 function isWhiteListed(url) {
   var ext = extension(url);
-  return
-    (ext in AUDIO_TYPES) ||
+  return (ext in AUDIO_TYPES) ||
     (ext in IMAGE_TYPES) ||
     (ext in VIDEO_TYPES) ||
     (ext in DOCUMENT_TYPES);
 }
 
 function isSupportedLink(a) {
-  return isSupported(a.href.toLowerCase());
+  return isSupported(a.href);
 }
 
 function isSupported(url) {
@@ -107,7 +106,7 @@ function isSupported(url) {
 }
 
 function isImage(img) {
-  var src = img.src.toLowerCase();
+  var src = img.src;
   return extension(src) in IMAGE_TYPES;
 };
 
