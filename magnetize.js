@@ -74,7 +74,7 @@ function createDownloadLinks(urls) {
   var types = ["audio", "video", "images", "documents"];
   for(var i = 0; i < types.length; ++i) {
     if(urlsOfType[types[i]].length > 0) {
-      html += '<p style="margin: 0; padding-top: 2px; margin-left: 18px;font: 12px arial;"><a style="color: #2152a6;" href="' + generateMagnetUrl(urlsOfType[types[i]]) + '">Download only ' + types[i] + ' (' + urlsOfType[types[i]].length + ')</a></p>' +
+      html += '<p style="margin: 0; padding-top: 2px; margin-left: 18px;font: 12px arial;"><a style="color: #2152a6;" href="' + generateMagnetUrl(urlsOfType[types[i]]) + '">Download only ' + types[i] + ' (' + urlsOfType[types[i]].length + ')</a></p>'
     }
   }
   html += '</div>';
