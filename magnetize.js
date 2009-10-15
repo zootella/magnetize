@@ -54,6 +54,16 @@ function absoulutize(url) {
 }
 
 function createDownloadAllLink(link, count) {
+  var containerStyles = 'position: fixed; top: 4px; right: 4px; border: 1px solid #333; background-color: #ffe; width: 172px; padding: 0;' +
+    '-webkit-border-radius: 7px; -webkit-box-shadow: 0 2px 3px #333; -moz-box-shadow: 0 2px 3px #333; -moz-border-radius: 7px; overflow: hidden;';
+
+  var html = 
+    <div style="position: fixed; top: 4px; right: 4px; border: 1px solid #333; background-color: #ffe; width: 172px; padding: 0; -webkit-border-radius: 7px; -webkit-box-shadow: 0 2px 3px #333; -moz-box-shadow: 0 2px 3px #333; -moz-border-radius: 7px; overflow: hidden;">
+        <p style="margin: 0; padding: 0; padding-bottom: 2px; font: 12px arial; background-color: #d3d3d3; border-bottom: 1px solid #313131; -webkit-border-top-right-radius: 7px; -webkit-border-top-left-radius: 7px; -moz-border-radius-topright: 7px; -moz-border-radius-topleft: 7px;"><img style="margin: 3px 2px; margin-bottom: -3px;" src="assets/img/lime.gif" alt="lime" /><a style="color: #2152a6;" href="">Download all files (134)</a></p>
+        <p style="margin: 0; padding-top: 2px; margin-left: 18px;font: 12px arial;"><a style="color: #2152a6;" href="">Download only images (12)</a></p>
+        <p style="margin: 0; padding:2px 0; margin-left: 18px;font: 12px arial;"><a style="color: #2152a6;" href="">Download only audio (122)</a></p>
+    </div>
+
   var html = '<div style="background: white; position: fixed; z-index: 1000; top: 0; right: 0; width: 140px; height: 14px">';
   html += '<a href="' + link + '">Download all (' + count + ')</a>';
   html += "</div>";
