@@ -53,19 +53,32 @@ function absoulutize(url) {
   return url;
 }
 
-function createDownloadAllLink(link, count) {
+function createDownloadLinks(urls) {
   var containerStyles = 'position: fixed; top: 4px; right: 4px; border: 1px solid #333; background-color: #ffe; width: 172px; padding: 0; z-index: 10000;' +
     '-webkit-border-radius: 7px; -webkit-box-shadow: 0 2px 3px #333; -moz-box-shadow: 0 2px 3px #333; -moz-border-radius: 7px; overflow: hidden;';
 
   var headerStyles = 'margin: 0; padding: 0; padding-bottom: 2px; font: 12px arial; background-color: #d3d3d3;' + 
     'border-bottom: 1px solid #313131; -webkit-border-top-right-radius: 7px; -webkit-border-top-left-radius: 7px; -moz-border-radius-topright: 7px; -moz-border-radius-topleft: 7px;';
 
+  var urlsOfType = {
+    images: filterUrls(urls, IMAGE_TYPES),
+    video: filterUrls(urls, VIDEO_TYPES),
+    audio: filterUrls(urls, AUDIO_TYPES),
+    documents: filterUrls(urls, DOCUMENT_TYPES)
+  }
+
   var html =
      '<div style="' + containerStyles + '">' +
-     '   <p style="' + headerStyles + '"><img style="margin: 3px 2px; margin-bottom: -3px;" src="http://github.com/iamjwc/magnetize/raw/master/lime.gif" alt="lime" /><a style="color: #2152a6;" href="' + link +  '">Download all files (' + count + ')</a></p>' +
-     '   <p style="margin: 0; padding-top: 2px; margin-left: 18px;font: 12px arial;"><a style="color: #2152a6;" href="">Download only images (12)</a></p>' +
-     '   <p style="margin: 0; padding:2px 0; margin-left: 18px;font: 12px arial;"><a style="color: #2152a6;" href="">Download only audio (122)</a></p>' +
-     '</div>';
+     '   <p style="' + headerStyles + '"><img style="margin: 3px 2px; margin-bottom: -3px;" src="http://github.com/iamjwc/magnetize/raw/master/lime.gif" alt="lime" /><a style="color: #2152a6;" href="' + generateMagnetUrl(urls) +  '">Download all files (' + urls.length + ')</a></p>';
+
+  var types = ["audio", "video", "images", "documents"];
+  for(var i = 0; i < types.length; ++i) {
+    if(urlsOfType[types[i]].length > 0) {
+      html += '<p style="margin: 0; padding-top: 2px; margin-left: 18px;font: 12px arial;"><a style="color: #2152a6;" href="' + generateMagnetUrl(urlsOfType[types[i]]) + '">Download only ' + types[i] + ' (' + urlsOfType[types[i]].length + ')</a></p>' +
+    }
+  }
+  html += '</div>';
+
 
   //var html = '<div style="background: white; position: fixed; z-index: 1000; top: 0; right: 0; width: 140px; height: 14px">';
   //html += '<a href="' + link + '">Download all (' + count + ')</a>';
@@ -73,48 +86,106 @@ function createDownloadAllLink(link, count) {
   document.body.innerHTML += html;
 }
 
-function keepWantedLinks(a) {
-  var href = a.href.toLowerCase();
-  // don't handle urls with query strings or javascript calls or
-  // magnet links
-  if (href.indexOf('?') != -1 || href.indexOf('javascript:') == 0 || href.indexOf('magnet:?') == 0) {
-    return false;
-  }
-
-  var white_list = { 'jpeg':'', 'jpg':'', 'mp3':'', 'flv':'', 'png':'', 'gif':'', 'pdf':'', 'doc':'', 'docx': '', 'odt':'', 'txt':'' };
-  var ext = href.substr(href.lastIndexOf('.') + 1);
-
-  return ext in white_list
+function extension(url) {
+  return url.substr(url.lastIndexOf('.') + 1);
 }
 
-function keepImageSources(img) {
-  var src = img.src.toLowerCase();
-  var white_list = { 'jpeg':'', 'jpg':'', 'png':'', 'gif':'' };
-  var ext = src.substr(src.lastIndexOf('.') + 1);
+function isWhiteListed(url) {
+  var ext = extension(url);
+  return
+    ext in AUDIO_TYPES ||
+    ext in IMAGE_TYPES ||
+    ext in VIDEO_TYPES ||
+    ext in DOCUMENT_TYPES;
+}
 
-  return ext in white_list;
+function isSupportedLink(a) {
+  return isSupported(a.href.toLowerCase());
+}
+
+function isSupported(url) {
+  // don't handle urls with query strings or javascript calls or
+  // magnet links
+  if(url.indexOf('?') != -1 || url.indexOf('javascript:') == 0 || url.indexOf('magnet:?') == 0) {
+    return false
+  } else {
+    return isWhiteListed(url);
+  }
+}
+
+function isImage(img) {
+  var src = img.src.toLowerCase();
+  return extension(src) in IMAGE_TYPES;
 };
 
-(function() {
-  var non_page_links = getMatchingElements("a", null, keepWantedLinks);
-
-  console.log(non_page_links);
-  var download_all_link = "magnet:?";
-  for (var i = 0; i < non_page_links.length; i++) {
-    var a = non_page_links[i];
+function rewriteLinks(links) {
+  for (var i = 0; i < links.length; i++) {
+    var a = links[i];
     var href = absoulutize(a.href);
     a.setAttribute('href', "magnet:?xs=" + href);
-    download_all_link += "&xs." + i + "=" + href;
+  }
+}
+
+function urlsFromLinks(links) {
+  var urls = [];
+  for (var i = 0; i < links.length; i++) {
+    var a = links[i];
+    var href = absoulutize(a.href);
+    urls.push(href);
   }
 
-  var images = getMatchingElements("img", null, keepImageSources);
-  console.log(images);
+  return urls;
+}
+
+function urlsFromImages(images) {
+  var urls = [];
   for (var i = 0; i < images.length; i++) {
-    download_all_link += "&xs." + (i + non_page_links.length) + "=" + absoulutize(images[i].src);
+    urls.push(absoulutize(images[i].src))
   }
-  console.log(download_all_link);
-  if (non_page_links.length > 0 || images.length > 0) {
-    createDownloadAllLink(download_all_link, non_page_links.length + images.length);
+
+  return urls;
+}
+
+AUDIO_TYPES    = { 'mp3':'' };
+IMAGE_TYPES    = { 'jpeg':'', 'jpg':'', 'png':'', 'gif':'' };
+VIDEO_TYPES    = { 'flv':'' };
+DOCUMENT_TYPES = { 'pdf':'', 'doc':'', 'docx': '', 'odt':'', 'txt':'' };
+
+function filterUrls(urls, filter) {
+  var urls = [];
+
+  for(var i = 0; i < urls.length; ++i) {
+    if(extension(urls[i]) in filter) {
+      urls.push(urls[i]);
+    }
+  }
+
+  return urls;
+}
+
+function generateMagnetUrl(urls) {
+  var magnetUrl = "magnet:?";
+
+  for(var i = 0; i < urls.length; ++i) {
+    magnetUrl += "&xs." + i + "=" + urls[i];
+  }
+
+  return magnetUrl;
+}
+
+(function() {
+  var supportedLinks = getMatchingElements("a", null, isSupportedLink);
+  var linkUrls = urlsFromLinks(supportedLinks);
+  rewriteLinks(supportedLinks)
+
+  var images = getMatchingElements("img", null, isImage);
+  var imgUrls = urlsFromImages(images)
+
+  var urls = linkUrls.concat(imgUrls);
+
+  console.log(urls);
+  if (urls.length > 0) {
+    createDownloadLinks(urls);
   }
 })();
 
