@@ -54,7 +54,7 @@ function absoulutize(url) {
 }
 
 function createDownloadAllLink(link, count) {
-  var containerStyles = 'position: fixed; top: 4px; right: 4px; border: 1px solid #333; background-color: #ffe; width: 172px; padding: 0;' +
+  var containerStyles = 'position: fixed; top: 4px; right: 4px; border: 1px solid #333; background-color: #ffe; width: 172px; padding: 0; z-index: 10000;' +
     '-webkit-border-radius: 7px; -webkit-box-shadow: 0 2px 3px #333; -moz-box-shadow: 0 2px 3px #333; -moz-border-radius: 7px; overflow: hidden;';
 
   var headerStyles = 'margin: 0; padding: 0; padding-bottom: 2px; font: 12px arial; background-color: #d3d3d3;' + 
@@ -73,23 +73,30 @@ function createDownloadAllLink(link, count) {
   document.body.innerHTML += html;
 }
 
-function main() {
-  var non_page_links = getMatchingElements("a", null, function(a) {
-    var href = a.href.toLowerCase();
-    // don't handle urls with query strings or javascript calls or
-    // magnet links
-    if (href.indexOf('?') != -1 || href.indexOf('javascript:') == 0
-      || href.indexOf('magnet:?') == 0) {
-      return false;
-    }
-
-    var white_list = { 'jpeg':'', 'jpg':'', 'mp3':'', 'flv':'', 'png':'', 'gif':'', 'pdf':'', 'doc':'', 'docx': '', 'odt':'', 'txt':'' };
-    var ext = href.substr(href.lastIndexOf('.') + 1);
-    if (ext in white_list) {
-      return true;
-    }
+function keepWantedLinks(a) {
+  var href = a.href.toLowerCase();
+  // don't handle urls with query strings or javascript calls or
+  // magnet links
+  if (href.indexOf('?') != -1 || href.indexOf('javascript:') == 0 || href.indexOf('magnet:?') == 0) {
     return false;
-  });
+  }
+
+  var white_list = { 'jpeg':'', 'jpg':'', 'mp3':'', 'flv':'', 'png':'', 'gif':'', 'pdf':'', 'doc':'', 'docx': '', 'odt':'', 'txt':'' };
+  var ext = href.substr(href.lastIndexOf('.') + 1);
+
+  return ext in white_list
+}
+
+function keepImageSources(img) {
+  var src = img.src.toLowerCase();
+  var white_list = { 'jpeg':'', 'jpg':'', 'png':'', 'gif':'' };
+  var ext = src.substr(src.lastIndexOf('.') + 1);
+
+  return ext in white_list;
+};
+
+function main() {
+  var non_page_links = getMatchingElements("a", null, keepWantedLinks);
 
   console.log(non_page_links);
   var download_all_link = "magnet:?";
@@ -99,14 +106,8 @@ function main() {
     a.setAttribute('href', "magnet:?xs=" + href);
     download_all_link += "&xs." + i + "=" + href;
   }
-  var images = getMatchingElements("img", null, function(img) {
-    var src = img.src.toLowerCase();
-    var white_list = { 'jpeg':'', 'jpg':'', 'png':'', 'gif':'' };
-    var ext = src.substr(src.lastIndexOf('.') + 1);
-    if (ext in white_list) {
-      return true;
-    }
-  });
+
+  var images = getMatchingElements("img", null, keepImageSources);
   console.log(images);
   for (var i = 0; i < images.length; i++) {
     download_all_link += "&xs." + (i + non_page_links.length) + "=" + absoulutize(images[i].src);
