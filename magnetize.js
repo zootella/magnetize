@@ -6,9 +6,9 @@
 //
 
 
-if (!window.console) {
+if (!console) {
   console = {
-    log : function(e) {}
+    log: function(e) {}
   }
 }
 
@@ -156,7 +156,6 @@ function filterUrls(urls, filter) {
   var returnUrls = [];
 
   for(var i = 0; i < urls.length; ++i) {
-    console.log(extension(urls[i]));
     if(extension(urls[i]) in filter) {
       returnUrls.push(urls[i]);
     }
