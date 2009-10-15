@@ -62,12 +62,12 @@ function createDownloadLinks(urls) {
 
   var html =
      '<div style="' + containerStyles + '">' +
-     '   <p style="' + headerStyles + '"><img style="margin: 3px 2px; margin-bottom: -3px;" src="http://github.com/iamjwc/magnetize/raw/master/lime.gif" alt="lime" /><a style="color: #2152a6;" href="' + generateMagnetUrl(urls) +  '">Download All Files (' + urls.length + ')</a></p>';
+     '   <p style="' + headerStyles + '"><img style="margin: 3px 2px; margin-bottom: -3px;" src="http://github.com/iamjwc/magnetize/raw/master/lime.gif" alt="lime" /><a style="color: #2152a6; font-weight: normal;" href="' + generateMagnetUrl(urls) +  '">Download All Files (' + urls.length + ')</a></p>';
 
   var types = ["Audio", "Video", "Images", "Documents"];
   for(var i = 0; i < types.length; ++i) {
     if(urlsOfType[types[i]].length > 0) {
-      html += '<p style="margin: 0; padding-top: 2px; margin-left: 18px;font: 12px arial; font-weight: normal;"><a style="color: #2152a6;" href="' + generateMagnetUrl(urlsOfType[types[i]]) + '">Download ' + types[i] + ' Only (' + urlsOfType[types[i]].length + ')</a></p>';
+      html += '<p style="margin: 0; padding-top: 2px; margin-left: 18px;font: 12px arial; font-weight: normal;"><a style="color: #2152a6; font-weight: normal;" href="' + generateMagnetUrl(urlsOfType[types[i]]) + '">Download ' + types[i] + ' Only (' + urlsOfType[types[i]].length + ')</a></p>';
     }
   }
   html += '</div>';
