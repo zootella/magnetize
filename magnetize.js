@@ -6,12 +6,6 @@
 //
 
 
-if (!console) {
-  console = {
-    log: function(e) {}
-  }
-}
-
 function getMatchingElements(tagName, parent, filter) {
   var a = [];
   var els = (parent ? parent : document).getElementsByTagName(tagName);
@@ -49,7 +43,6 @@ function absoulutize(url) {
     }
   }
   url = encodeURIComponent(url);
-  console.log(url);
   return url;
 }
 
@@ -73,7 +66,6 @@ function createDownloadLinks(urls) {
 
   var types = ["audio", "video", "images", "documents"];
   for(var i = 0; i < types.length; ++i) {
-    console.log(urlsOfType[types[i]]);
     if(urlsOfType[types[i]].length > 0) {
       html += '<p style="margin: 0; padding-top: 2px; margin-left: 18px;font: 12px arial;"><a style="color: #2152a6;" href="' + generateMagnetUrl(urlsOfType[types[i]]) + '">Download only ' + types[i] + ' (' + urlsOfType[types[i]].length + ')</a></p>';
     }
@@ -184,7 +176,6 @@ function generateMagnetUrl(urls) {
 
   var urls = linkUrls.concat(imgUrls);
 
-  console.log(urls);
   if (urls.length > 0) {
     createDownloadLinks(urls);
   }
