@@ -95,7 +95,7 @@ function keepImageSources(img) {
   return ext in white_list;
 };
 
-function main() {
+(function() {
   var non_page_links = getMatchingElements("a", null, keepWantedLinks);
 
   console.log(non_page_links);
@@ -116,7 +116,5 @@ function main() {
   if (non_page_links.length > 0 || images.length > 0) {
     createDownloadAllLink(download_all_link, non_page_links.length + images.length);
   }
-}
-
-main();
+})();
 
