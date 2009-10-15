@@ -86,10 +86,10 @@ function extension(url) {
 function isWhiteListed(url) {
   var ext = extension(url);
   return
-    ext in AUDIO_TYPES ||
-    ext in IMAGE_TYPES ||
-    ext in VIDEO_TYPES ||
-    ext in DOCUMENT_TYPES;
+    (ext in AUDIO_TYPES) ||
+    (ext in IMAGE_TYPES) ||
+    (ext in VIDEO_TYPES) ||
+    (ext in DOCUMENT_TYPES);
 }
 
 function isSupportedLink(a) {
@@ -168,6 +168,7 @@ function generateMagnetUrl(urls) {
 
 (function() {
   var supportedLinks = getMatchingElements("a", null, isSupportedLink);
+  console.log(supportedLinks);
   var linkUrls = urlsFromLinks(supportedLinks);
   rewriteLinks(supportedLinks)
 
