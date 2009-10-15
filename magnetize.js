@@ -54,20 +54,20 @@ function createDownloadLinks(urls) {
     'border-bottom: 1px solid #313131; -webkit-border-top-right-radius: 7px; -webkit-border-top-left-radius: 7px; -moz-border-radius-topright: 7px; -moz-border-radius-topleft: 7px;';
 
   var urlsOfType = {
-    images: filterUrls(urls, IMAGE_TYPES),
-    video: filterUrls(urls, VIDEO_TYPES),
-    audio: filterUrls(urls, AUDIO_TYPES),
-    documents: filterUrls(urls, DOCUMENT_TYPES)
+    Images: filterUrls(urls, IMAGE_TYPES),
+    Video: filterUrls(urls, VIDEO_TYPES),
+    Audio: filterUrls(urls, AUDIO_TYPES),
+    Documents: filterUrls(urls, DOCUMENT_TYPES)
   }
 
   var html =
      '<div style="' + containerStyles + '">' +
      '   <p style="' + headerStyles + '"><img style="margin: 3px 2px; margin-bottom: -3px;" src="http://github.com/iamjwc/magnetize/raw/master/lime.gif" alt="lime" /><a style="color: #2152a6;" href="' + generateMagnetUrl(urls) +  '">Download all files (' + urls.length + ')</a></p>';
 
-  var types = ["audio", "video", "images", "documents"];
+  var types = ["Audio", "Video", "Images", "Documents"];
   for(var i = 0; i < types.length; ++i) {
     if(urlsOfType[types[i]].length > 0) {
-      html += '<p style="margin: 0; padding-top: 2px; margin-left: 18px;font: 12px arial;"><a style="color: #2152a6;" href="' + generateMagnetUrl(urlsOfType[types[i]]) + '">Download only ' + types[i] + ' (' + urlsOfType[types[i]].length + ')</a></p>';
+      html += '<p style="margin: 0; padding-top: 2px; margin-left: 18px;font: 12px arial;"><a style="color: #2152a6;" href="' + generateMagnetUrl(urlsOfType[types[i]]) + '">Download ' + types[i] + ' Only (' + urlsOfType[types[i]].length + ')</a></p>';
     }
   }
   html += '</div>';
