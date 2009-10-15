@@ -167,7 +167,6 @@ function generateMagnetUrl(urls) {
 
 (function() {
   var supportedLinks = getMatchingElements("a", null, isSupportedLink);
-  console.log(supportedLinks);
   var linkUrls = urlsFromLinks(supportedLinks);
   rewriteLinks(supportedLinks)
 
