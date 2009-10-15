@@ -153,15 +153,16 @@ VIDEO_TYPES    = { 'flv':'' };
 DOCUMENT_TYPES = { 'pdf':'', 'doc':'', 'docx': '', 'odt':'', 'txt':'' };
 
 function filterUrls(urls, filter) {
-  var urls = [];
+  var returnUrls = [];
 
   for(var i = 0; i < urls.length; ++i) {
+    console.log(extension(urls[i]));
     if(extension(urls[i]) in filter) {
-      urls.push(urls[i]);
+      returnUrls.push(urls[i]);
     }
   }
 
-  return urls;
+  return returnUrls;
 }
 
 function generateMagnetUrl(urls) {
