@@ -121,11 +121,22 @@ function urlsFromImages(images) {
   return urls;
 }
 
-AUDIO_TYPES    = { 'mp3':'' };
-IMAGE_TYPES    = { 'jpeg':'', 'jpg':'', 'png':'', 'gif':'' };
-VIDEO_TYPES    = { 'flv':'' };
-DOCUMENT_TYPES = { 'pdf':'', 'doc':'', 'docx': '', 'odt':'', 'txt':'' };
-TORRENT_TYPES = { 'torrent': '' };
+function toTrueHash(s) {
+  var hash = {};
+
+  var items = s.split(' ');
+  for(var i in items) {
+    hash[items[i]] = true;
+  }
+
+  return hash;
+}
+
+AUDIO_TYPES    = toTrueHash('aif aifc aiff au fla flac kar lqt m4a med mid midi mod mp3 mpa ogg ra rmi rmj shn snd wav wma');
+IMAGE_TYPES    = toTrueHash('bmp gif img jpe jpg jpeg png tif tiff');
+VIDEO_TYPES    = toTrueHash('asf asx avi cdg dcr flv jve nsv ogm gt ram rm smi srt sub wmv');
+DOCUMENT_TYPES = toTrueHash('pdf ps doc docx odt txt');
+TORRENT_TYPES  = toTrueHash('torrent');
 
 function filterUrls(urls, filter) {
   var returnUrls = [];
