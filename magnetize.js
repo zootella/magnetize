@@ -32,7 +32,7 @@ function absoulutize(url) {
 }
 
 function createDownloadLinks(urls) {
-  var containerStyles = 'position: fixed; top: 4px; font-weight: normal; right: 4px; border: 1px solid #333; background-color: #ffe; width: 190px; padding: 0; z-index: 999990;' +
+  var containerStyles = 'position: fixed; top: 4px; font-weight: normal; right: 4px; border: 1px solid #333; background-color: #ffe; width: 190px; padding: 0; padding-bottom: 2px; z-index: 999990;' +
     '-webkit-border-radius: 7px; -webkit-box-shadow: 0 2px 3px #333; -moz-box-shadow: 0 2px 3px #333; -moz-border-radius: 7px; overflow: hidden;';
 
   var headerStyles = 'margin: 0; padding: 0; font-weight: normal; padding-bottom: 2px; font: 11px arial; background-color: #d3d3d3;' + 
