@@ -1,11 +1,3 @@
-//
-// <p>
-//   Bookmark this link:
-//   <a href="javascript:(function()%20{var%20script%20=%20document.createElement(%22script%22);script.type%20=%20%22text/javascript%22;script.src%20=%20%22http://github.com/iamjwc/magnetize/raw/master/magnetize.js%22;document.getElementsByTagName(%22head%22)[0].appendChild(script);})();">magnetize</a>
-// </p>
-//
-
-
 function getMatchingElements(tagName, parent, filter) {
   var a = [];
   var els = (parent ? parent : document).getElementsByTagName(tagName);
@@ -19,13 +11,6 @@ function getMatchingElements(tagName, parent, filter) {
   }
   return a;
 }
-
-function getElementsByClassName(tagName, className, parent)  {
-  return getMatchingElements(tagName, parent, function(el) {
-    return el.className == className;
-  });
-}
-
 /**
  * Makes href element of url an absolute one and returns it.
  */
@@ -57,14 +42,15 @@ function createDownloadLinks(urls) {
     Images: filterUrls(urls, IMAGE_TYPES),
     Video: filterUrls(urls, VIDEO_TYPES),
     Audio: filterUrls(urls, AUDIO_TYPES),
-    Documents: filterUrls(urls, DOCUMENT_TYPES)
+    Documents: filterUrls(urls, DOCUMENT_TYPES),
+	Torrents: filterUrls(urls, TORRENT_TYPES)
   }
 
   var html =
      '<div style="' + containerStyles + '">' +
      '   <p style="' + headerStyles + '"><img style="margin: 3px 2px; margin-bottom: -3px;" src="http://github.com/iamjwc/magnetize/raw/master/lime.gif" alt="lime" /><a style="color: #2152a6; font-weight: normal;" href="' + generateMagnetUrl(urls) +  '">Download All Files (' + urls.length + ')</a></p>';
 
-  var types = ["Audio", "Video", "Images", "Documents"];
+  var types = ["Audio", "Video", "Images", "Documents", "Torrents"];
   for(var i = 0; i < types.length; ++i) {
     if(urlsOfType[types[i]].length > 0) {
       html += '<p style="margin: 0; padding-top: 2px; margin-left: 18px;font: 12px arial; font-weight: normal;"><a style="color: #2152a6; font-weight: normal;" href="' + generateMagnetUrl(urlsOfType[types[i]]) + '">Download ' + types[i] + ' Only (' + urlsOfType[types[i]].length + ')</a></p>';
@@ -72,10 +58,6 @@ function createDownloadLinks(urls) {
   }
   html += '</div>';
 
-
-  //var html = '<div style="background: white; position: fixed; z-index: 1000; top: 0; right: 0; width: 140px; height: 14px">';
-  //html += '<a href="' + link + '">Download all (' + count + ')</a>';
-  //html += "</div>";
   document.body.innerHTML += html;
 }
 
@@ -88,7 +70,8 @@ function isWhiteListed(url) {
   return (ext in AUDIO_TYPES) ||
     (ext in IMAGE_TYPES) ||
     (ext in VIDEO_TYPES) ||
-    (ext in DOCUMENT_TYPES);
+    (ext in DOCUMENT_TYPES ||
+	 ext in TORRENT_TYPES);
 }
 
 function isSupportedLink(a) {
@@ -142,6 +125,7 @@ AUDIO_TYPES    = { 'mp3':'' };
 IMAGE_TYPES    = { 'jpeg':'', 'jpg':'', 'png':'', 'gif':'' };
 VIDEO_TYPES    = { 'flv':'' };
 DOCUMENT_TYPES = { 'pdf':'', 'doc':'', 'docx': '', 'odt':'', 'txt':'' };
+TORRENT_TYPES = { 'torrent': '' };
 
 function filterUrls(urls, filter) {
   var returnUrls = [];
