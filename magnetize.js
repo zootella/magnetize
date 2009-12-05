@@ -24,7 +24,7 @@ function absoulutize(url) {
       url = location.substr(0, location.indexOf('/', 7)) + url;
     } else {
       var location = window.location.toString();
-      url = location.substr(0, location.lastIndexof('/') + 1) + url;
+      url = location.substr(0, location.lastIndexOf('/') + 1) + url;
     }
   }
   url = encodeURIComponent(url);
